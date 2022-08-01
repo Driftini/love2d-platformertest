@@ -26,6 +26,10 @@ function Actor:initialize(world, x, y, w, h)
     self.world:add(self, x, y, w, h)
 end
 
+function Actor:destroy()
+    self.world:remove(self)
+end
+
 function Actor:applyGravity()
     self.gravityVelocity = self.gravityVelocity + self.fallSpeed
 
