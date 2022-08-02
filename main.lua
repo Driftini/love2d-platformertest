@@ -8,6 +8,8 @@ function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
     love.graphics.setLineStyle('rough')
 
+    mapLoader:new()
+
     mapLoader:load("debug")
 end
 

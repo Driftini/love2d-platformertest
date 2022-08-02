@@ -5,8 +5,8 @@ local Entity = require("obj.entity")
 -- Entity capable of movement (npcs, player...)
 local Actor = class("Actor", Entity)
 
-function Actor:initialize(entity, world)
-    Entity.initialize(self, entity, world)
+function Actor:initialize(entity, world, entitiesTable)
+    Entity.initialize(self, entity, world, entitiesTable)
 
     self.running = false
     self.runSpeed = 0
