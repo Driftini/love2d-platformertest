@@ -3,8 +3,8 @@ local class = require "lib.middleclass"
 local Actor = require "obj.actor"
 local Player = class("Player", Actor)
 
-function Player:initialize(entity, world)
-    Actor.initialize(self, entity, world)
+function Player:initialize(entity, world, entitiesTable)
+    Actor.initialize(self, entity, world, entitiesTable)
 
     self.w = 8
     self.h = 16

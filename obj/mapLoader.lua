@@ -10,29 +10,12 @@ local SCollider = require "obj.scollider"
 local MapLoader = class("mapLoader")
 
 function MapLoader:initialize()
-    self.world = {} -- bump world
-    self.tiles = {} -- static colliders
+    self.world = bump.newWorld() -- Colliding entities
+    self.entities = {} -- All entities
 
-    self.objects = {} -- objects
-end
-
--- Colliding objects
-local world = bump.newWorld()
-local blocks = {}
-
--- All objects
-local entities = {}
-
-local function addBlock(x, y, w, h)
-    local block = { x = x, y = y, w = w, h = h }
-    blocks[#blocks + 1] = block
-    world:add(block, x, y, w, h)
-end
-
-local function drawBlocks()
-    for _, block in ipairs(blocks) do
-        love.graphics.rectangle("fill", block.x, block.y, block.w, block.h)
-    end
+    print("MapLoader initialized.")
+    print(self.entities)
+    print("---")
 end
 
 function MapLoader:load(map)
@@ -40,63 +23,67 @@ function MapLoader:load(map)
     ldtk:setFlipped(false)
 
     function ldtk.entity(entity)
-        -- placeholder
+        -- TODO: use a switch or separate class
         if entity.identifier == "Collider" then
-            local newCollider = SCollider:new(entity, world)
-            table.insert(entities, newCollider)
+            SCollider:new(entity, self.world, self.entities)
         else if entity.identifier == "Player_Spawn" then
-                local newPlayer = Player:new(entity, world)
-                table.insert(entities, newPlayer)
+                Player:new(entity, self.world, self.entities)
             else
-                local newEntity = Entity:new(entity, world)
-                table.insert(entities, newEntity)
-            end
-
-            function ldtk.layer(layer)
-                table.insert(entities, layer)
-            end
-
-            function ldtk.onLevelLoad(levelData)
-                ldtk.removeCache()
-
-                entities = {}
-                world = bump.newWorld()
-                love.graphics.setBackgroundColor(levelData.bgColor)
-            end
-
-            function ldtk.onLevelCreated(levelData)
+                Entity:new(entity, self.world, self.entities)
             end
         end
+    end
+
+    function ldtk.layer(layer)
+        table.insert(self.entities, layer)
+    end
+
+    function ldtk.onLevelLoad(levelData)
+        ldtk.removeCache()
+
+        self.entities = {}
+        self.world = bump.newWorld()
+        love.graphics.setBackgroundColor(levelData.bgColor)
+    end
+
+    function ldtk.onLevelCreated(levelData)
     end
 
     ldtk:goTo(1)
 end
 
 function MapLoader:keypressed(key, isRepeat)
-    local len = #entities
-
-    for i = 1, len do
-        if entities[i].keyEvents then
-            entities[i]:keypressed(key, isRepeat)
+    for i = 1, #self.entities do
+        if self.entities[i].keyEvents then
+            self.entities[i]:keypressed(key, isRepeat)
         end
     end
 end
 
 function MapLoader:update(dt)
-    local len = #entities
+    -- If there are X more entities than colliders,
+    -- check if there are entities marked for removal
+    if #self.entities > (self.world:countItems() + 20) then
+        for i = 1, #self.entities do
+            if self.entities[i].destroyed then
+                table.remove(self.entities, i)
+            end
+        end
+    end
 
-    for i = 1, len do
-        if entities[i].order == nil then -- check if not a layer
-            entities[i]:update(dt)
+    -- Then update the entities
+    for i = 1, #self.entities do
+        if self.entities[i].order == nil then -- Check if not a layer
+            self.entities[i]:update(dt)
         end
     end
 end
 
 function MapLoader:draw()
-    local len = #entities
+    local len = #self.entities
 
     for i = 1, len, 1 do
-        entities[i]:draw() -- drawing every object in order
+        self.entities[i]:draw() -- Draw every object in order
     end
 end
 
