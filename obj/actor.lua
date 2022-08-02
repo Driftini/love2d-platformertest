@@ -1,13 +1,12 @@
 local class = require "lib.middleclass"
 
-local Actor = class("Actor")
+local Entity = require("obj.entity")
 
-function Actor:initialize(world, x, y, w, h)
-    self.world = world
-    self.x = x
-    self.y = y
-    self.w = w
-    self.h = h
+-- Entity capable of movement (npcs, player...)
+local Actor = class("Actor", Entity)
+
+function Actor:initialize(entity, world)
+    Entity.initialize(self, entity, world)
 
     self.running = false
     self.runSpeed = 0
@@ -15,19 +14,13 @@ function Actor:initialize(world, x, y, w, h)
     self.friction = 1.3
 
     self.jumpForce = 0
-    self.fallSpeed = 10
+    self.fallSpeed = 8
     self.gravityVelocity = 0
 
     self.grounded = false
 
     self.vx = 0
     self.vy = 0
-
-    self.world:add(self, x, y, w, h)
-end
-
-function Actor:destroy()
-    self.world:remove(self)
 end
 
 function Actor:applyGravity()
@@ -87,10 +80,6 @@ end
 
 function Actor:update(dt)
     self:move(dt)
-end
-
-function Actor:draw()
-    love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
 end
 
 return Actor

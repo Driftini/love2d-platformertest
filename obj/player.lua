@@ -3,13 +3,18 @@ local class = require "lib.middleclass"
 local Actor = require "obj.actor"
 local Player = class("Player", Actor)
 
-function Player:initialize(world, x, y)
-    Actor.initialize(self, world, x, y, 16, 32)
+function Player:initialize(entity, world)
+    Actor.initialize(self, entity, world)
 
-    self.runSpeed = 30
-    self.runSpeedCap = 400
+    self.w = 8
+    self.h = 16
 
-    self.jumpForce = 600
+    self.runSpeed = 15
+    self.runSpeedCap = 150
+
+    self.jumpForce = 400
+
+    self.keyEvents = true
 end
 
 function Player:checkInput() -- for continuous inputs

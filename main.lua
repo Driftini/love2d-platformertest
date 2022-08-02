@@ -12,11 +12,11 @@ function love.load()
 end
 
 function love.keypressed(key, scancode, isRepeat)
-    --player:keypressed(key, isRepeat)
+    mapLoader:keypressed(key, isRepeat)
 end
 
 function love.update(dt)
-    --player:update(dt)
+    mapLoader:update(dt)
 end
 
 function love.draw()
@@ -31,6 +31,4 @@ function love.draw()
     love.graphics.print(sizeX .. "x" .. sizeY, 4, 16)
     --drawBlocks()
     --player:draw()
-
-    
 end
