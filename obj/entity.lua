@@ -10,20 +10,20 @@ function Entity:initialize(entity, world, entitiesTable)
     self.w, self.h = entity.width, entity.height
     self.visible = entity.visible
 
-    print("Initializing entity...")
-    print(self.entitiesTable)
-
     table.insert(self.entitiesTable, self)
-    self.world:add(self, self.x, self.y, self.w, self.h)
 
-    print("... entity initialized.\n---")
+    if not self.noCollisions then
+        self.world:add(self, self.x, self.y, self.w, self.h)
+    end
 end
 
 function Entity:destroy()
     -- makes the entity suitable for removal by the MapLoader
     self.destroyed = true
 
-    self.world:remove(self)
+    if not self.noCollisions then
+        self.world:remove(self)
+    end
 end
 
 function Entity:update()
