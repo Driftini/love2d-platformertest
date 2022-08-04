@@ -2,11 +2,14 @@ local class = require "lib.middleclass"
 
 local Entity = require("obj.entity")
 
+local identifier = "Actor"
+
 -- Entity capable of movement (npcs, player...)
 local Actor = class("Actor", Entity)
 
 function Actor:initialize(entity, world, entitiesTable)
     Entity.initialize(self, entity, world, entitiesTable)
+    self.identifier = identifier
 
     self.running = false
     self.runSpeed = 0
@@ -79,7 +82,9 @@ function Actor:move(dt)
 end
 
 function Actor:update(dt)
-    self:move(dt)
+    if not self.destroyed then
+        self:move(dt)
+    end
 end
 
 return Actor

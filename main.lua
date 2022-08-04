@@ -1,7 +1,10 @@
 local mapLoader = require "obj.MapLoader"
 
 function love.load()
+    print("Game started.")
     --player = Player:new(world, 100, 100)
+
+    if arg[#arg] == "-debug" then require("mobdebug").start() end
 
     -- Graphics configuration
     love.window.setMode(1280, 720)
@@ -29,8 +32,11 @@ function love.draw()
     love.graphics.scale(0.5, 0.5)
 
     local sizeX, sizeY = love.graphics.getDimensions()
-    love.graphics.print("FPS: " .. love.timer.getFPS(), 4, 4)
-    love.graphics.print(sizeX .. "x" .. sizeY, 4, 16)
-    --drawBlocks()
-    --player:draw()
+    local debugHUD =
+    "FPS: " .. love.timer.getFPS() .. "\n" ..
+    "Resolution:" .. sizeX .. "x" .. sizeY .. "\n" ..
+    "Colliding entity count: " .. mapLoader.world:countItems() .. "\n" ..
+    "Entity count: " .. #mapLoader.entities
+
+    love.graphics.print(debugHUD, 4, 4)
 end

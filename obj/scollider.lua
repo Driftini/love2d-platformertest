@@ -2,11 +2,14 @@ local class = require "lib.middleclass"
 
 local Entity = require "obj.entity"
 
+local identifier = "SCollider"
+
 -- Static collider.
-local SCollider = class("SCollider", Entity)
+local SCollider = class(identifier, Entity)
 
 function SCollider:initialize(entity, world, entitiesTable)
     Entity.initialize(self, entity, world, entitiesTable)
+    self.identifier = identifier
 end
 
 function SCollider:draw()

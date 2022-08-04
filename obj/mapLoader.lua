@@ -6,47 +6,55 @@ local Entity = require "obj.scollider"
 local Actor = require "obj.actor"
 local Player = require "obj.player"
 local SCollider = require "obj.scollider"
+local CloudSpawner = require "obj.cloudSpawner"
 
 local MapLoader = class("mapLoader")
 
 function MapLoader:initialize()
     self.world = bump.newWorld() -- Colliding entities
     self.entities = {} -- All entities
-
-    print("MapLoader initialized.")
-    print(self.entities)
-    print("---")
+    self.layers = {}
 end
 
 function MapLoader:load(map)
+    local loadTime, finishTime
+
     ldtk:load("ldtk/levels/" .. map .. ".ldtk")
     ldtk:setFlipped(false)
 
     function ldtk.entity(entity)
         -- TODO: use a switch or separate class
-        if entity.identifier == "Collider" then
+        if entity.identifier == "SCollider" then
             SCollider:new(entity, self.world, self.entities)
-        else if entity.identifier == "Player_Spawn" then
-                Player:new(entity, self.world, self.entities)
-            else
-                Entity:new(entity, self.world, self.entities)
-            end
+        elseif entity.identifier == "Player" then
+            Player:new(entity, self.world, self.entities)
+        elseif entity.identifier == "CloudSpawner" then
+            CloudSpawner:new(entity, self.world, self.entities)
+        else
+            Entity:new(entity, self.world, self.entities)
         end
     end
 
     function ldtk.layer(layer)
-        table.insert(self.entities, layer)
+        table.insert(self.layers, layer)
     end
 
     function ldtk.onLevelLoad(levelData)
+        print("[MAPLOADER] Loading map " .. levelData.identifier .. "...")
+        loadTime = love.timer.getTime()
+
         ldtk.removeCache()
 
         self.entities = {}
+        self.layers = {}
         self.world = bump.newWorld()
         love.graphics.setBackgroundColor(levelData.bgColor)
     end
 
     function ldtk.onLevelCreated(levelData)
+        finishTime = love.timer.getTime()
+        print("[MAPLOADER] Map " ..
+            levelData.identifier .. " finished loading in " .. (finishTime - loadTime) * 1000 .. "ms.")
     end
 
     ldtk:goTo(1)
@@ -61,29 +69,26 @@ function MapLoader:keypressed(key, isRepeat)
 end
 
 function MapLoader:update(dt)
-    -- If there are X more entities than colliders,
-    -- check if there are entities marked for removal
-    if #self.entities > (self.world:countItems() + 20) then
-        for i = 1, #self.entities do
-            if self.entities[i].destroyed then
-                table.remove(self.entities, i)
-            end
-        end
-    end
+    local i = 1 --for loops are broken
 
-    -- Then update the entities
-    for i = 1, #self.entities do
-        if self.entities[i].order == nil then -- Check if not a layer
+    while i <= #self.entities do
+        if self.entities[i].destroyed then
+            table.remove(self.entities, i)
+        else
             self.entities[i]:update(dt)
         end
+
+        i = i + 1
     end
 end
 
 function MapLoader:draw()
-    local len = #self.entities
+    for i = 1, #self.entities do
+        self.entities[i]:draw()
+    end
 
-    for i = 1, len, 1 do
-        self.entities[i]:draw() -- Draw every object in order
+    for i = 1, #self.layers do
+        self.layers[i]:draw()
     end
 end
 
