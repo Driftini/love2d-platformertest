@@ -1,7 +1,7 @@
 local class = require "lib.middleclass"
 
-local Entity = require "obj.Entity"
-local Placeholder = require "obj.placeholder"
+local Entity = require "obj.entity"
+local Cloud = require "obj.cloud"
 
 local identifier = "CloudSpawner"
 
@@ -9,7 +9,6 @@ local identifier = "CloudSpawner"
 local CloudSpawner = class(identifier, Entity)
 
 function CloudSpawner:initialize(entity, world, entitiesTable)
-    self.noCollisions = true
     Entity.initialize(self, entity, world, entitiesTable)
     self.identifier = identifier
 
@@ -38,7 +37,7 @@ function CloudSpawner:spawnCloud()
         }
     }
 
-    Placeholder:new(cloudEntity, self.world, self.entitiesTable)
+    Cloud:new(cloudEntity, self.world, self.entitiesTable)
 end
 
 function CloudSpawner:update(dt)

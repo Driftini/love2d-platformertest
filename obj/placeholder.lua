@@ -1,6 +1,6 @@
 local class = require "lib.middleclass"
 
-local Entity = require "obj.Entity"
+local Entity = require "obj.entity"
 
 local identifier = "Placeholder"
 
@@ -8,19 +8,9 @@ local identifier = "Placeholder"
 local Placeholder = class(identifier, Entity)
 
 function Placeholder:initialize(entity, world, entitiesTable)
-    self.noCollisions = true
     Entity.initialize(self, entity, world, entitiesTable)
     self.identifier = identifier
-
-    self.deathCountdown = 3
-end
-
-function Placeholder:update(dt)
-    self.deathCountdown = self.deathCountdown - dt
-
-    if self.deathCountdown <= 0 then
-        Entity.destroy(self)
-    end
+    table.insert(self.collisionGroups, "Placeholder")
 end
 
 return Placeholder

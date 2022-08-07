@@ -10,6 +10,8 @@ local SCollider = class(identifier, Entity)
 function SCollider:initialize(entity, world, entitiesTable)
     Entity.initialize(self, entity, world, entitiesTable)
     self.identifier = identifier
+    self.visible = false
+    table.insert(self.collisionGroups, "Map")
 end
 
 function SCollider:draw()

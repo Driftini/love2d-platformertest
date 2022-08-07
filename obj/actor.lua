@@ -26,6 +26,16 @@ function Actor:initialize(entity, world, entitiesTable)
     self.vy = 0
 end
 
+function Actor:filter(other)
+    local cg = other.collisionGroups
+
+    for i = 1, #cg do
+        if      cg[i] == "Map"      then return "slide"
+        elseif  cg[i] == "Particle" then return "cross"
+        end
+    end
+end
+
 function Actor:applyGravity()
     self.gravityVelocity = self.gravityVelocity + self.fallSpeed
 
@@ -70,7 +80,7 @@ function Actor:move(dt)
     local goalX = self.x + self.vx * dt
     local goalY = self.y + (self.vy + self.gravityVelocity) * dt
 
-    local actualX, actualY, cols, len = self.world:move(self, goalX, goalY)
+    local actualX, actualY, cols, len = self.world:move(self, goalX, goalY, self.filter)
 
     self.grounded = false
 

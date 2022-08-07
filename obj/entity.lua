@@ -5,32 +5,30 @@ local identifier = "Entity"
 -- Generic class for LDtk entities. Can collide
 local Entity = class(identifier)
 
-function Entity:initialize(entity, world, entitiesTable)
+function Entity:initialize(entity, world, entitiesTable, additionalCGroups)
     self.identifier = identifier
 
     self.world = world
     self.entitiesTable = entitiesTable
+
     self.x, self.y = entity.x, entity.y
     self.w, self.h = entity.width, entity.height
     self.visible = entity.visible
+
+    self.collisionGroups = {}
 
     self.destroyed = false
 
     table.insert(self.entitiesTable, self)
 
-    if not self.noCollisions then
-        self.world:add(self, self.x, self.y, self.w, self.h)
-    end
+    self.world:add(self, self.x, self.y, self.w, self.h)
 end
 
 function Entity:destroy()
-    if not self.noCollisions then
-        self.world:remove(self)
-    end
+    self.world:remove(self)
 
     self.visible = false
-    -- makes the entity suitable for removal by the MapLoader
-    self.destroyed = true
+    self.destroyed = true -- makes the entity suitable for removal by the MapLoader
 end
 
 function Entity:update()
