@@ -69,8 +69,9 @@ function MapLoader:keypressed(key, isRepeat)
 end
 
 function MapLoader:update(dt)
-    local i = 1 --for loops are broken
+    local i = 1
 
+    -- For loops won't work with a changing length
     while i <= #self.entities do
         if self.entities[i].destroyed then
             table.remove(self.entities, i)

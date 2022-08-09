@@ -1,13 +1,9 @@
 local class = require "lib.middleclass"
 
-local identifier = "Entity"
-
 -- Generic class for LDtk entities. Can collide
-local Entity = class(identifier)
+local Entity = class("Entity")
 
 function Entity:initialize(entity, world, entitiesTable, additionalCGroups)
-    self.identifier = identifier
-
     self.world = world
     self.entitiesTable = entitiesTable
 
@@ -16,6 +12,10 @@ function Entity:initialize(entity, world, entitiesTable, additionalCGroups)
     self.visible = entity.visible
 
     self.collisionGroups = {}
+
+    self.spritesheet = nil
+    self.animations = {}
+    self.currentAnim = nil
 
     self.destroyed = false
 
@@ -36,6 +36,10 @@ end
 
 function Entity:draw()
     if self.visible then
+        if self.currentAnim then
+            self.currentAnim:draw(self.spritesheet, self.x, self.y)
+        end
+
         love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
     end
 end

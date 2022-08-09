@@ -1,15 +1,14 @@
 local class = require "lib.middleclass"
+local anim8 = require "lib.anim8"
 
 local Actor = require "obj.actor"
 
-local identifier = "Cloud"
-
 -- boilerplate for other entities ig
-local Cloud = class(identifier, Actor)
+local Cloud = class("Cloud", Actor)
 
 function Cloud:initialize(entity, world, entitiesTable)
     Actor.initialize(self, entity, world, entitiesTable)
-    self.identifier = identifier
+    self.spritesheet = love.graphics.newImage("assets/cloud.png")
 
     self.fallSpeed = 0
     self.friction = 1
@@ -19,17 +18,26 @@ function Cloud:initialize(entity, world, entitiesTable)
     if entity.props.Direction == "Left" then
         self.vx = self.vx * -1 -- Invert direction
     end
+
+    Cloud.chooseSprite(self)
 end
 
-function Cloud:filter(other) -- override default collision filter
+function Cloud:chooseSprite()
+    local rnd = math.random(1,3)
+
+    local grid = anim8.newGrid(146, 60, self.spritesheet:getWidth(), self.spritesheet:getHeight(), 0, 0, 3)
+
+    self.animations.spawn = anim8.newAnimation( grid(rnd, 1), 1, "pauseOnEnd")
+
+    self.currentAnim = self.animations.spawn
+end
+
+function Cloud:filter() -- override default collision filter
     return "cross"
 end
 
 function Cloud:draw()
-    local r, g, b, a = love.graphics.getColor()
-    love.graphics.setColor(0.5, 0.8, 0.8, 1)
     Actor.draw(self)
-    love.graphics.setColor(r, g, b, a)
 end
 
 return Cloud

@@ -1,15 +1,13 @@
 local class = require "lib.middleclass"
+local anim8 = require "lib.anim8"
 
 local Entity = require "obj.entity"
 
-local identifier = "Placeholder"
-
 -- boilerplate for other entities ig
-local Placeholder = class(identifier, Entity)
+local Placeholder = class("Placeholder", Entity)
 
 function Placeholder:initialize(entity, world, entitiesTable)
     Entity.initialize(self, entity, world, entitiesTable)
-    self.identifier = identifier
     table.insert(self.collisionGroups, "Placeholder")
 end
 

@@ -2,14 +2,11 @@ local class = require "lib.middleclass"
 
 local Entity = require("obj.entity")
 
-local identifier = "Actor"
-
 -- Entity capable of movement (npcs, player...)
 local Actor = class("Actor", Entity)
 
 function Actor:initialize(entity, world, entitiesTable)
     Entity.initialize(self, entity, world, entitiesTable)
-    self.identifier = identifier
 
     self.running = false
     self.runSpeed = 0
@@ -56,12 +53,14 @@ function Actor:checkGround(colNormalY)
     if colNormalY < 0 then
         self.grounded = true
 
-        if self.vy > -self.jumpForce then -- if hitting the ground midjump, stop the jump
+        -- if hitting the ground midjump, stop the jump
+        if self.vy > -self.jumpForce then
             self.vy = 0
         end
     end
 
-    if colNormalY > 0 then -- if hitting the ceiling midjump, stop the jump
+    -- if hitting the ceiling midjump, stop the jump
+    if colNormalY > 0 then
         self.vy = 0
     end
 end
@@ -74,7 +73,7 @@ function Actor:move(dt)
     if not self.grounded then
         self:applyGravity()
     else
-        self.gravityVelocity = 1 -- if set to zero, grounded state will flicker
+        self.gravityVelocity = 1-- if set to zero, grounded state will flicker
     end
 
     local goalX = self.x + self.vx * dt

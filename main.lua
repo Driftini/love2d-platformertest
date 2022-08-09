@@ -21,15 +21,20 @@ function love.keypressed(key, scancode, isRepeat)
 end
 
 function love.update(dt)
+    -- lag simulation
+    if love.keyboard.isDown("z") then
+        dt = dt / 5
+    end
+
     mapLoader:update(dt)
 end
 
 function love.draw()
-    love.graphics.scale(2, 2)
+    love.graphics.scale(2)
 
     mapLoader:draw()
 
-    love.graphics.scale(0.5, 0.5)
+    love.graphics.scale(0.5)
 
     local sizeX, sizeY = love.graphics.getDimensions()
     local debugHUD =

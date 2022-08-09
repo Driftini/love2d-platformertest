@@ -3,14 +3,12 @@ local class = require "lib.middleclass"
 local Entity = require "obj.entity"
 local Cloud = require "obj.cloud"
 
-local identifier = "CloudSpawner"
-
 -- Spawn clouds
-local CloudSpawner = class(identifier, Entity)
+local CloudSpawner = class("CloudSpawner", Entity)
 
 function CloudSpawner:initialize(entity, world, entitiesTable)
     Entity.initialize(self, entity, world, entitiesTable)
-    self.identifier = identifier
+    self.visible = false
 
     self.cloudDirection = entity.props.Direction
     self.cloudVariant = entity.props.Variant

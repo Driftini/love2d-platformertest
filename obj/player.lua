@@ -1,14 +1,12 @@
 local class = require "lib.middleclass"
+local anim8 = require "lib.anim8"
 
 local Actor = require "obj.actor"
 
-local identifier = "Player"
-
-local Player = class(identifier, Actor)
+local Player = class("Player", Actor)
 
 function Player:initialize(entity, world, entitiesTable)
     Actor.initialize(self, entity, world, entitiesTable)
-    self.identifier = identifier
 
     self.w = 8
     self.h = 16
