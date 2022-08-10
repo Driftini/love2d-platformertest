@@ -3,7 +3,7 @@ local class = require "lib.middleclass"
 -- Generic class for LDtk entities. Can collide
 local Entity = class("Entity")
 
-function Entity:initialize(entity, world, entitiesTable, additionalCGroups)
+function Entity:initialize(entity, world, entitiesTable)
     self.world = world
     self.entitiesTable = entitiesTable
 
@@ -16,6 +16,7 @@ function Entity:initialize(entity, world, entitiesTable, additionalCGroups)
     self.spritesheet = nil
     self.animations = {}
     self.currentAnim = nil
+    self.flipped = false
 
     self.destroyed = false
 
@@ -37,10 +38,12 @@ end
 function Entity:draw()
     if self.visible then
         if self.currentAnim then
+            if self.flipped then self.currentAnim:flipH() end
             self.currentAnim:draw(self.spritesheet, self.x, self.y)
+            if self.flipped then self.currentAnim:flipH() end -- flip back to normal
         end
 
-        love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
+        --love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
     end
 end
 

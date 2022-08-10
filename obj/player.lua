@@ -8,10 +8,17 @@ local Player = class("Player", Actor)
 function Player:initialize(entity, world, entitiesTable)
     Actor.initialize(self, entity, world, entitiesTable)
 
-    self.w = 8
-    self.h = 16
+    self.spritesheet = love.graphics.newImage("assets/player.png")
+    local grid = anim8.newGrid(32, 32, self.spritesheet:getWidth(), self.spritesheet:getHeight(), 2, 2, 0)
+    self.animations.idle = anim8.newAnimation(grid(1, 1), 1)
+    self.animations.run = anim8.newAnimation(grid("2-5", 1), {0.12, 0.1, 0.12, 0.1})
 
-    self.runSpeed = 15
+    self.currentAnim = self.animations.idle
+
+    self.w = 32
+    self.h = 32
+
+    self.runSpeed = 20
     self.runSpeedCap = 150
 
     self.jumpForce = 400
@@ -36,6 +43,7 @@ function Player:checkInput() -- for continuous inputs
         end
 
         self.running = true
+        self.flipped = true
     end
     if love.keyboard.isDown("d") then
         -- Brake if already running
@@ -51,6 +59,7 @@ function Player:checkInput() -- for continuous inputs
         end
 
         self.running = true
+        self.flipped = false
     end
 end
 
@@ -71,6 +80,14 @@ end
 function Player:update(dt)
     Actor.update(self, dt)
     self:checkInput()
+
+    self.currentAnim:update(dt)
+
+    if self.running then
+        self.currentAnim = self.animations.run
+    else
+        self.currentAnim = self.animations.idle
+    end
 end
 
 function Player:draw()

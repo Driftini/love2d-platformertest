@@ -21,7 +21,7 @@ end
 function CloudSpawner:spawnCloud()
     local cloudEntity = {
         x = self.x,
-        y = self.y + math.random(-5, 5),
+        y = self.y + math.random(0, 10),
         width = self.w,
         height = self.h,
         visible = true,

@@ -8,6 +8,7 @@ local Cloud = class("Cloud", Actor)
 
 function Cloud:initialize(entity, world, entitiesTable)
     Actor.initialize(self, entity, world, entitiesTable)
+
     self.spritesheet = love.graphics.newImage("assets/cloud.png")
 
     self.fallSpeed = 0
@@ -27,7 +28,7 @@ function Cloud:chooseSprite()
 
     local grid = anim8.newGrid(146, 60, self.spritesheet:getWidth(), self.spritesheet:getHeight(), 0, 0, 3)
 
-    self.animations.spawn = anim8.newAnimation( grid(rnd, 1), 1, "pauseOnEnd")
+    self.animations.spawn = anim8.newAnimation(grid(rnd, 1), 1)
 
     self.currentAnim = self.animations.spawn
 end
