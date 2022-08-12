@@ -40,7 +40,6 @@ function love.draw()
     local debugHUD =
     "FPS: " .. love.timer.getFPS() .. "\n" ..
     "Resolution:" .. sizeX .. "x" .. sizeY .. "\n" ..
-    "Colliding entity count: " .. mapLoader.world:countItems() .. "\n" ..
     "Entity count: " .. #mapLoader.entities
 
     love.graphics.print(debugHUD, 4, 4)
