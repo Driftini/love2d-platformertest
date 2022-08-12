@@ -12,7 +12,7 @@ function Cloud:initialize(entity, world, entitiesTable)
     self.spritesheet = love.graphics.newImage("assets/cloud.png")
 
     self.fallSpeed = 0
-    self.friction = 1
+    self.friction = 0
 
     self.vx = entity.props.Speed
 

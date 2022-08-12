@@ -11,10 +11,10 @@ function Actor:initialize(entity, world, entitiesTable)
     self.running = false
     self.runSpeed = 0
     self.runSpeedCap = 0
-    self.friction = 1.3
+    self.friction = 50
 
     self.jumpForce = 0
-    self.fallSpeed = 8
+    self.fallSpeed = 500
     self.gravityVelocity = 0
 
     self.grounded = false
@@ -33,16 +33,16 @@ function Actor:filter(other)
     end
 end
 
-function Actor:applyGravity()
-    self.gravityVelocity = self.gravityVelocity + self.fallSpeed
+function Actor:applyGravity(dt)
+    self.gravityVelocity = self.gravityVelocity + self.fallSpeed * dt
 
     if self.vy < 0 then
-        self.vy = self.vy + self.fallSpeed
+        self.vy = self.vy + self.fallSpeed * dt
     end
 end
 
-function Actor:applyFriction()
-    self.vx = self.vx / self.friction
+function Actor:applyFriction(dt)
+    self.vx = self.vx / (1 + self.friction * dt)
 
     if math.abs(self.vx) < 1 then
         self.vx = 0
@@ -71,11 +71,11 @@ end
 
 function Actor:move(dt)
     if not self.running then
-        self:applyFriction()
+        self:applyFriction(dt)
     end
 
     if not self.grounded then
-        self:applyGravity()
+        self:applyGravity(dt)
     else
         self.gravityVelocity = 1 -- if set to zero, grounded state will flicker
     end

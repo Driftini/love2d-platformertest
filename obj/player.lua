@@ -18,24 +18,24 @@ function Player:initialize(entity, world, entitiesTable)
     self.w = 32
     self.h = 32
 
-    self.runSpeed = 20
+    self.runSpeed = 700
     self.runSpeedCap = 150
 
-    self.jumpForce = 400
+    self.jumpForce = 370
 
     self.keyEvents = true
 end
 
-function Player:checkInput() -- for continuous inputs
+function Player:checkInput(dt) -- for continuous inputs
     self.running = false
 
     if love.keyboard.isDown("a") then
         -- Brake if already running
         if self.vx > 0 then
-            Actor.applyFriction(self)
+            Actor.applyFriction(self, dt)
         end
 
-        self.vx = self.vx - self.runSpeed
+        self.vx = self.vx - self.runSpeed * dt
 
         -- Apply speed cap
         if self.vx < -self.runSpeedCap then
@@ -48,10 +48,10 @@ function Player:checkInput() -- for continuous inputs
     if love.keyboard.isDown("d") then
         -- Brake if already running
         if self.vx < 0 then
-            Actor.applyFriction(self)
+            Actor.applyFriction(self, dt)
         end
 
-        self.vx = self.vx + self.runSpeed
+        self.vx = self.vx + self.runSpeed * dt
 
         -- Apply speed cap
         if self.vx > self.runSpeedCap then
@@ -79,7 +79,7 @@ end
 
 function Player:update(dt)
     Actor.update(self, dt)
-    self:checkInput()
+    self:checkInput(dt)
 
     if self.running then
         self.currentAnim = self.animations.run
