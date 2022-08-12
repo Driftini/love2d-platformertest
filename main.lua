@@ -21,7 +21,7 @@ function love.keypressed(key, scancode, isRepeat)
 end
 
 function love.update(dt)
-    -- lag simulation
+    -- For delta time-related debugging
     if love.keyboard.isDown("z") then
         dt = dt / 5
     end
