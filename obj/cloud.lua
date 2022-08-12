@@ -3,7 +3,7 @@ local anim8 = require "lib.anim8"
 
 local Actor = require "obj.actor"
 
--- boilerplate for other entities ig
+-- Cloud, duh
 local Cloud = class("Cloud", Actor)
 
 function Cloud:initialize(entity, world, entitiesTable)

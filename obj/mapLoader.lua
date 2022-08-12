@@ -7,6 +7,7 @@ local Actor = require "obj.actor"
 local Player = require "obj.player"
 local SCollider = require "obj.scollider"
 local CloudSpawner = require "obj.cloudSpawner"
+local RainSpawner = require "obj.rainSpawner"
 
 local MapLoader = class("mapLoader")
 
@@ -30,6 +31,8 @@ function MapLoader:load(map)
             Player:new(entity, self.world, self.entities)
         elseif entity.identifier == "CloudSpawner" then
             CloudSpawner:new(entity, self.world, self.entities)
+        elseif entity.identifier == "RainSpawner" then
+            RainSpawner:new(entity, self.world, self.entities)
         else
             Entity:new(entity, self.world, self.entities)
         end
@@ -84,6 +87,9 @@ function MapLoader:update(dt)
 end
 
 function MapLoader:draw()
+    table.sort(self.entities, function(a,b) return a.order < b.order end)
+    table.sort(self.layers, function(a,b) return a.order < b.order end)
+
     for i = 1, #self.entities do
         self.entities[i]:draw()
     end

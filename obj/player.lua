@@ -81,8 +81,6 @@ function Player:update(dt)
     Actor.update(self, dt)
     self:checkInput()
 
-    self.currentAnim:update(dt)
-
     if self.running then
         self.currentAnim = self.animations.run
     else
@@ -97,8 +95,9 @@ function Player:draw()
     --     love.graphics.print("grounded", self.x, self.y - 40)
     -- end
 
-    -- love.graphics.print("x " .. self.x, self.x, self.y - 28)
-    -- love.graphics.print("y " .. self.y, self.x, self.y - 16)
+    -- love.graphics.print("grav " .. self.gravityVelocity, self.x, self.y - 40)
+    -- love.graphics.print("vx " .. self.vx, self.x, self.y - 28)
+    -- love.graphics.print("vy " .. self.vy, self.x, self.y - 16)
 end
 
 return Player

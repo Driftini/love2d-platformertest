@@ -65,6 +65,10 @@ function Actor:checkGround(colNormalY)
     end
 end
 
+function Actor:onCollide(col)
+   -- Actors can define their own checks and logic 
+end
+
 function Actor:move(dt)
     if not self.running then
         self:applyFriction()
@@ -73,7 +77,7 @@ function Actor:move(dt)
     if not self.grounded then
         self:applyGravity()
     else
-        self.gravityVelocity = 1-- if set to zero, grounded state will flicker
+        self.gravityVelocity = 1 -- if set to zero, grounded state will flicker
     end
 
     local goalX = self.x + self.vx * dt
@@ -85,6 +89,7 @@ function Actor:move(dt)
 
     for i = 1, len do
         self:checkGround(cols[i].normal.y)
+        self:onCollide(cols[i])
     end
 
     self.x, self.y = actualX, actualY
@@ -92,6 +97,7 @@ end
 
 function Actor:update(dt)
     if not self.destroyed then
+        Entity.update(self, dt)
         self:move(dt)
     end
 end

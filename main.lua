@@ -1,4 +1,4 @@
-local mapLoader = require "obj.MapLoader"
+local mapLoader = require "obj.mapLoader"
 
 function love.load()
     print("Game started.")

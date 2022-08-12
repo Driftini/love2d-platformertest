@@ -10,6 +10,7 @@ function Entity:initialize(entity, world, entitiesTable)
     self.x, self.y = entity.x, entity.y
     self.w, self.h = entity.width, entity.height
     self.visible = entity.visible
+    self.order = entity.order -- rendering order
 
     self.collisionGroups = {}
 
@@ -32,7 +33,12 @@ function Entity:destroy()
     self.destroyed = true -- makes the entity suitable for removal by the MapLoader
 end
 
-function Entity:update()
+function Entity:update(dt)
+    if not self.destroyed then
+        if self.currentAnim then
+            self.currentAnim:update(dt)
+        end
+    end
 end
 
 function Entity:draw()
