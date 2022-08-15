@@ -1,4 +1,5 @@
 local class = require "lib.middleclass"
+local utils = require "utils"
 
 -- Generic class for LDtk entities. Can collide
 local Entity = class("Entity")
@@ -7,10 +8,19 @@ function Entity:initialize(entity, world, entitiesTable)
     self.world = world
     self.entitiesTable = entitiesTable
 
-    self.x, self.y = entity.x, entity.y
-    self.w, self.h = entity.width, entity.height
+    if not self.x and not self.y then
+        self.x, self.y = entity.x, entity.y
+    end
+
+    if not self.w and not self.h then
+        self.w, self.h = entity.width, entity.height
+    end
+
+    if not self.order then
+        self.order = entity.order -- Rendering order
+    end
+
     self.visible = entity.visible
-    self.order = entity.order -- rendering order
 
     self.collisionGroups = {}
 
@@ -30,7 +40,7 @@ function Entity:destroy()
     self.world:remove(self)
 
     self.visible = false
-    self.destroyed = true -- makes the entity suitable for removal by the MapLoader
+    self.destroyed = true -- Makes the entity suitable for removal by the MapLoader
 end
 
 function Entity:filter(other)

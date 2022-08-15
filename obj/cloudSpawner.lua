@@ -19,20 +19,13 @@ function CloudSpawner:initialize(entity, world, entitiesTable)
 end
 
 function CloudSpawner:spawnCloud()
-    local cloudEntity = {
-        x = self.x,
-        y = self.y + math.random(0, 10),
-        width = self.w,
-        height = self.h,
-        visible = true,
-        px = 0,
-        py = 0,
-        order = 3,
-        props = {
-            Direction = self.cloudDirection,
-            Variant = self.cloudVariant,
-            Speed = self.cloudSpeed
-        }
+    local cloudEntity = BlankEntity()
+
+    cloudEntity.x, cloudEntity.y = self.x, self.y
+    cloudEntity.props = {
+        Direction = self.cloudDirection,
+        Variant = self.cloudVariant,
+        Speed = self.cloudSpeed
     }
 
     Cloud:new(cloudEntity, self.world, self.entitiesTable)

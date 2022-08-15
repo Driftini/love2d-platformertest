@@ -6,6 +6,8 @@ local Actor = require "obj.actor"
 local Player = class("Player", Actor)
 
 function Player:initialize(entity, world, entitiesTable)
+    self.w, self.h = 32, 32
+
     Actor.initialize(self, entity, world, entitiesTable)
     table.insert(self.collisionGroups, "Player")
 
@@ -15,9 +17,6 @@ function Player:initialize(entity, world, entitiesTable)
     self.animations.run = anim8.newAnimation(grid("2-5", 1), {0.12, 0.1, 0.12, 0.1})
 
     self.currentAnim = self.animations.idle
-
-    self.w = 32
-    self.h = 32
 
     self.runSpeed = 700
     self.runSpeedCap = 150
@@ -64,11 +63,9 @@ function Player:checkInput(dt) -- for continuous inputs
     end
 end
 
-function Player:keypressed(key, isRepeat) -- for non-continuous inputs
-    if not isRepeat then
-        if key == "w" then
-            self:jump()
-        end
+function Player:keypressed(key) -- for non-continuous inputs
+    if key == "w" then
+        self:jump()
     end
 end
 

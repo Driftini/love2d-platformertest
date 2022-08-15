@@ -7,6 +7,9 @@ local Actor = require "obj.actor"
 local Raindrop = class("Raindrop", Actor)
 
 function Raindrop:initialize(entity, world, entitiesTable)
+    self.w, self.h = 9, 9
+    self.order = 2
+
     Actor.initialize(self, entity, world, entitiesTable)
 
     self.spritesheet = love.graphics.newImage("assets/rain.png")

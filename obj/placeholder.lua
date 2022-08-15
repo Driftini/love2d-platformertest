@@ -7,11 +7,14 @@ local Entity = require "obj.entity"
 local Placeholder = class("Placeholder", Entity)
 
 function Placeholder:initialize(entity, world, entitiesTable)
+    self.w, self.y = 32, 32
+    self.order = 1
+
     Entity.initialize(self, entity, world, entitiesTable)
     table.insert(self.collisionGroups, "Placeholder")
 
-    --self.spritesheet = love.graphics.newImage("assets/placeholder.png")
-    --local grid = anim8.newGrid(32, 32, self.spritesheet:getWidth(), self.spritesheet:getHeight(), 2, 2, 0)
+    self.spritesheet = love.graphics.newImage("assets/placeholder.png")
+    local grid = anim8.newGrid(32, 32, self.spritesheet:getWidth(), self.spritesheet:getHeight(), 2, 2, 0)
 end
 
 return Placeholder

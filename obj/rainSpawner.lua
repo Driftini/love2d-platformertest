@@ -18,19 +18,10 @@ function RainSpawner:initialize(entity, world, entitiesTable)
 end
 
 function RainSpawner:spawnRain()
-    local raindropEntity = {
-        x = math.random(self.x, self.x + self.w),
-        y = math.random(self.y, self.y + self.h),
-        width = 9,
-        height = 9,
-        visible = true,
-        px = 0,
-        py = 0,
-        order = 2,
-        props = {
-            Direction = self.rainDirection
-        }
-    }
+    local raindropEntity = BlankEntity()
+
+    raindropEntity.x, raindropEntity.y = math.random(self.x, self.x + self.w), math.random(self.y, self.y + self.h)
+    raindropEntity.props.Direction = self.rainDirection
 
     Raindrop:new(raindropEntity, self.world, self.entitiesTable)
 end

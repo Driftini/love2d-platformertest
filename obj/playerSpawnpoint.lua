@@ -2,7 +2,7 @@ local class = require "lib.middleclass"
 
 local Entity = require "obj.entity"
 
--- boilerplate for other entities ig
+-- Player spawnpoint
 local PlayerSpawnpoint = class("PlayerSpawnPoint", Entity)
 
 function PlayerSpawnpoint:initialize(entity, world, entitiesTable)

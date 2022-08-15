@@ -7,6 +7,9 @@ local Actor = require "obj.actor"
 local Cloud = class("Cloud", Actor)
 
 function Cloud:initialize(entity, world, entitiesTable)
+    self.w, self.h = 150, 64
+    self.order = 3
+
     Actor.initialize(self, entity, world, entitiesTable)
 
     self.spritesheet = love.graphics.newImage("assets/cloud.png")
