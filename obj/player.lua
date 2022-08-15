@@ -7,6 +7,7 @@ local Player = class("Player", Actor)
 
 function Player:initialize(entity, world, entitiesTable)
     Actor.initialize(self, entity, world, entitiesTable)
+    table.insert(self.collisionGroups, "Player")
 
     self.spritesheet = love.graphics.newImage("assets/player.png")
     local grid = anim8.newGrid(32, 32, self.spritesheet:getWidth(), self.spritesheet:getHeight(), 2, 2, 0)

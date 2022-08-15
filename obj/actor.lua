@@ -23,16 +23,6 @@ function Actor:initialize(entity, world, entitiesTable)
     self.vy = 0
 end
 
-function Actor:filter(other)
-    local cg = other.collisionGroups
-
-    for i = 1, #cg do
-        if      cg[i] == "Map"      then return "slide"
-        elseif  cg[i] == "Particle" then return "cross"
-        end
-    end
-end
-
 function Actor:applyGravity(dt)
     self.gravityVelocity = self.gravityVelocity + self.fallSpeed * dt
 
@@ -65,10 +55,6 @@ function Actor:checkGround(colNormalY)
     end
 end
 
-function Actor:onCollide(col)
-   -- Actors can define their own checks and logic 
-end
-
 function Actor:move(dt)
     if not self.running then
         self:applyFriction(dt)
@@ -96,10 +82,8 @@ function Actor:move(dt)
 end
 
 function Actor:update(dt)
-    if not self.destroyed then
-        Entity.update(self, dt)
-        self:move(dt)
-    end
+    Entity.update(self, dt)
+    self:move(dt)
 end
 
 return Actor

@@ -33,11 +33,37 @@ function Entity:destroy()
     self.destroyed = true -- makes the entity suitable for removal by the MapLoader
 end
 
-function Entity:update(dt)
-    if not self.destroyed then
-        if self.currentAnim then
-            self.currentAnim:update(dt)
+function Entity:filter(other)
+    local cg = other.collisionGroups
+
+    for i = 1, #cg do
+        if      cg[i] == "Map"      then return "slide"
+        elseif  cg[i] == "Particle" then return "cross"
         end
+    end
+end
+
+function Entity:onCollide(col)
+    -- Entities can define their own checks and logic
+end
+
+function Entity:check()
+    local actualX, actualY, cols, len = self.world:check(self, self.x, self.y, self.filter)
+
+    print(len)
+
+    for i = 1, len do
+        Entity:onCollide(cols[i])
+    end
+end
+
+function Entity:update(dt)
+    if self.super == "Entity" then
+        self.world:check()
+    end
+    
+    if self.currentAnim then
+        self.currentAnim:update(dt)
     end
 end
 
