@@ -32,7 +32,6 @@ end
 
 function MapLoader:loadProject(project)
 	ldtk:load("ldtk/levels/" .. project .. ".ldtk")
-	self:loadLevel()
 end
 
 function MapLoader:loadLevel(level, playerSpawnpointID)
@@ -78,11 +77,7 @@ function MapLoader:loadLevel(level, playerSpawnpointID)
 		end
 	end
 
-	if level then
-		ldtk:level(level)
-	else
-		ldtk:goTo(1)
-	end
+	ldtk:level(level)
 end
 
 function MapLoader:keypressed(key)
