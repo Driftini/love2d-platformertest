@@ -6,12 +6,12 @@ local Entity = require "obj.entity"
 local PlayerSpawnpoint = class("PlayerSpawnPoint", Entity)
 
 function PlayerSpawnpoint:initialize(entity, world, entitiesTable)
-    Entity.initialize(self, entity, world, entitiesTable)
-    self.spawnID = entity.props.SpawnID
+	Entity.initialize(self, entity, world, entitiesTable)
+	self.spawnID = entity.props.SpawnID
 end
 
 function PlayerSpawnpoint:update()
-    Entity.destroy(self)
+	Entity.destroy(self)
 end
 
 return PlayerSpawnpoint

@@ -7,57 +7,57 @@ local Actor = require "obj.actor"
 local Raindrop = class("Raindrop", Actor)
 
 function Raindrop:initialize(entity, world, entitiesTable)
-    self.w, self.h = 9, 9
-    self.order = 2
+	self.w, self.h = 9, 9
+	self.order = 2
 
-    Actor.initialize(self, entity, world, entitiesTable)
+	Actor.initialize(self, entity, world, entitiesTable)
 
-    self.spritesheet = love.graphics.newImage("assets/rain.png")
-    local grid = anim8.newGrid(9, 9, self.spritesheet:getWidth(), self.spritesheet:getHeight(), 0, 0, 0)
-    self.animations.spawn = anim8.newAnimation(grid(1, 1), 1)
-    self.animations.ground = anim8.newAnimation(grid("2-4", 1), 0.1)
+	self.spritesheet = love.graphics.newImage("assets/rain.png")
+	local grid = anim8.newGrid(9, 9, self.spritesheet:getWidth(), self.spritesheet:getHeight(), 0, 0, 0)
+	self.animations.spawn = anim8.newAnimation(grid(1, 1), 1)
+	self.animations.ground = anim8.newAnimation(grid("2-4", 1), 0.1)
 
-    self.currentAnim = self.animations.spawn
+	self.currentAnim = self.animations.spawn
 
-    self.fallSpeed = 0
-    self.friction = 1
+	self.fallSpeed = 0
+	self.friction = 1
 
-    self.vx = 150
-    self.vy = 400
+	self.vx = 150
+	self.vy = 400
 
-    if entity.props.Direction == "Left" then
-        self.vx = self.vx * -1 -- Invert direction
-    end
+	if entity.props.Direction == "Left" then
+		self.vx = self.vx * -1 -- Invert direction
+	end
 end
 
 function Raindrop:filter(other) -- override default collision filter
-    local cg = other.collisionGroups
+	local cg = other.collisionGroups
 
-    for i = 1, #cg do
-        if cg[i] == "Map" then
-            return "touch"
-        end
-    end
+	for i = 1, #cg do
+		if cg[i] == "Map" then
+			return "touch"
+		end
+	end
 end
 
 function Raindrop:onCollide(col)
-    for i = 1, #col.other.collisionGroups do
-        if col.other.collisionGroups[i] == "Map" then
-            self.currentAnim = self.animations.ground
-        end
-    end
+	for i = 1, #col.other.collisionGroups do
+		if col.other.collisionGroups[i] == "Map" then
+			self.currentAnim = self.animations.ground
+		end
+	end
 end
 
 function Raindrop:update(dt)
-    Actor.update(self, dt)
+	Actor.update(self, dt)
 
-    if self.currentAnim == self.animations.ground and self.currentAnim.position == 3 then
-        Actor.destroy(self)
-    end
+	if self.currentAnim == self.animations.ground and self.currentAnim.position == 3 then
+		Actor.destroy(self)
+	end
 end
 
 function Raindrop:draw()
-    Actor.draw(self)
+	Actor.draw(self)
 end
 
 return Raindrop
