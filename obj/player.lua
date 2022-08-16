@@ -24,6 +24,7 @@ function Player:initialize(entity, world, entitiesTable)
 	self.jumpForce = 370
 
 	self.keyEvents = true
+	self.spotlight = true
 end
 
 function Player:checkInput(dt) -- for continuous inputs

@@ -1,4 +1,5 @@
 local class = require "lib.middleclass"
+local utils = require "utils"
 
 local Entity = require "obj.entity"
 local Cloud = require "obj.cloud"
@@ -19,7 +20,7 @@ function CloudSpawner:initialize(entity, world, entitiesTable)
 end
 
 function CloudSpawner:spawnCloud()
-	local cloudEntity = BlankEntity()
+	local cloudEntity = utils.blankEntity()
 
 	cloudEntity.x, cloudEntity.y = self.x, self.y
 	cloudEntity.props = {

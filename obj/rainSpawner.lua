@@ -1,4 +1,5 @@
 local class = require "lib.middleclass"
+local utils = require "utils"
 
 local Entity = require "obj.entity"
 local Raindrop = require "obj.raindrop"
@@ -18,7 +19,7 @@ function RainSpawner:initialize(entity, world, entitiesTable)
 end
 
 function RainSpawner:spawnRain()
-	local raindropEntity = BlankEntity()
+	local raindropEntity = utils.blankEntity()
 
 	raindropEntity.x, raindropEntity.y = math.random(self.x, self.x + self.w), math.random(self.y, self.y + self.h)
 	raindropEntity.props.Direction = self.rainDirection

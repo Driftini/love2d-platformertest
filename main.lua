@@ -1,4 +1,6 @@
-local mapLoader = require "obj.mapLoader"
+local MapLoader = require "obj.mapLoader"
+
+local ml
 
 function love.load()
 	print("Game started.")
@@ -11,14 +13,14 @@ function love.load()
 	love.graphics.setDefaultFilter('nearest', 'nearest')
 	love.graphics.setLineStyle('rough')
 
-	mapLoader:new()
+	ml = MapLoader:new()
 
-	mapLoader:loadProject("debug")
-	mapLoader:loadLevel("Level_Landing", "Center")
+	ml:loadProject("debug")
+	ml:loadLevel("Level_Landing", "Center")
 end
 
 function love.keypressed(key, scancode, isRepeat)
-	mapLoader:keypressed(key)
+	ml:keypressed(key)
 end
 
 function love.update(dt)
@@ -27,21 +29,21 @@ function love.update(dt)
 		dt = dt / 5
 	end
 
-	mapLoader:update(dt)
+	ml:update(dt)
 end
 
 function love.draw()
-	love.graphics.scale(2)
+	--love.graphics.scale(2)
 
-	mapLoader:draw()
+	ml:draw()
 
-	love.graphics.scale(0.5)
+	--love.graphics.scale(0.5)
 
 	local sizeX, sizeY = love.graphics.getDimensions()
 	local debugHUD =
 	"FPS: " .. love.timer.getFPS() .. "\n" ..
 	"Resolution:" .. sizeX .. "x" .. sizeY .. "\n" ..
-	"Entity count: " .. #mapLoader.entities
+	"Entity count: " .. #ml.entities
 
 	love.graphics.print(debugHUD, 4, 4)
 end

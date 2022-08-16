@@ -30,6 +30,7 @@ function Entity:initialize(entity, world, entitiesTable)
 	self.flipped = false
 
 	self.destroyed = false
+	self.spotlight = false -- Makes the camera look at the entity
 
 	table.insert(self.entitiesTable, self)
 

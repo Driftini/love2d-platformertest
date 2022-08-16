@@ -6,7 +6,8 @@ Optional end goal is making this usable as a base for future games I make with L
 ## Libraries used
 * [middleclass by kikito](https://github.com/kikito/middleclass)
 * [bump by kikito](https://github.com/kikito/bump.lua)
-* [anim8.lua by kikito](https://github.com/kikito/anim8)
+* [anim8 by kikito](https://github.com/kikito/anim8)
+* [gamera by kikito](https://github.com/kikito/gamera)
 * [json.lua by rxi](https://github.com/rxi/json.lua)
 * [ldtk-love by Hamdy Elzonqali](https://github.com/HamdyElzonqali/ldtk-love)
 

@@ -1,6 +1,7 @@
 local class = require "lib.middleclass"
 local bump = require "lib.bump"
 local ldtk = require "lib.ldtk"
+local gamera = require "lib.gamera"
 local utils = require "utils"
 
 local Player = require "obj.player"
@@ -16,6 +17,7 @@ function MapLoader:initialize()
 	self.world = bump.newWorld() -- Colliding entities
 	self.entities = {} -- All entities (should be merged with bump world probably)
 	self.layers = {} -- Tile layers
+	self.camera = gamera.new(0, 0, 1, 1)
 end
 
 function MapLoader:entitySwitch(e)
@@ -55,6 +57,9 @@ function MapLoader:loadLevel(level, playerSpawnpointID)
 		self.layers = {}
 		self.world = bump.newWorld()
 		love.graphics.setBackgroundColor(levelData.bgColor)
+
+		self.camera:setWorld(0, 0, levelData.width, levelData.height)
+		self.camera:setScale(3)
 	end
 
 	function ldtk.onLevelCreated(levelData)
@@ -65,12 +70,11 @@ function MapLoader:loadLevel(level, playerSpawnpointID)
 		if playerSpawnpointID then
 			for i = 1, #self.entities do
 				if self.entities[i].spawnID == playerSpawnpointID then
-					local playerEntity = BlankEntity()
+					local playerEntity = utils.blankEntity()
 
 					playerEntity.x, playerEntity.y = self.entities[i].x, self.entities[i].y
 
 					Player:new(playerEntity, self.world, self.entities)
-
 					return
 				end
 			end
@@ -105,6 +109,12 @@ function MapLoader:update(dt)
 			if self.entities[i].triggered then -- triggered MapTrigger
 				destination = self.entities[i].destination
 			end
+
+			if self.entities[i].spotlight then
+				local camX, camY = utils.getRectCenter(self.entities[i].x, self.entities[i].y, self.entities[i].w, self.entities[i].h)
+
+				self.camera:setPosition(camX, camY)
+			end
 		end
 
 		i = i + 1
@@ -122,16 +132,24 @@ function MapLoader:update(dt)
 end
 
 function MapLoader:draw()
-	table.sort(self.entities, function(a,b) return a.order < b.order end)
-	table.sort(self.layers, function(a,b) return a.order < b.order end)
+	self.camera:draw(
+		function()
+			local visibleEntities = self.world:queryRect(self.camera:getVisible())
 
-	for i = 1, #self.entities do
-		self.entities[i]:draw()
-	end
+			print("# entities: " .. self.world:countItems(), "	# drawn: " .. #visibleEntities)
 
-	for i = 1, #self.layers do
-		self.layers[i]:draw()
-	end
+			table.sort(visibleEntities, function(a,b) return a.order < b.order end)
+			table.sort(self.layers, function(a,b) return a.order < b.order end)
+
+			for i = 1, #visibleEntities do
+				visibleEntities[i]:draw()
+			end
+
+			for i = 1, #self.layers do
+				self.layers[i]:draw()
+			end
+		end
+	)
 end
 
 return MapLoader
