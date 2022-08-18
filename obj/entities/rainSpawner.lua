@@ -1,8 +1,8 @@
 local class = require "lib.middleclass"
 local utils = require "utils"
 
-local Entity = require "obj.entity"
-local Raindrop = require "obj.raindrop"
+local Entity = require "obj.entities.entity"
+local Raindrop = require "obj.entities.raindrop"
 
 -- Spawns rain
 local RainSpawner = class("CloudSpawner", Entity)

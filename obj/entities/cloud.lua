@@ -1,7 +1,7 @@
 local class = require "lib.middleclass"
 local anim8 = require "lib.anim8"
 
-local Actor = require "obj.actor"
+local Actor = require "obj.entities.actor"
 
 -- Cloud, duh
 local Cloud = class("Cloud", Actor)
@@ -12,7 +12,7 @@ function Cloud:initialize(entity, world, entitiesTable)
 
 	Actor.initialize(self, entity, world, entitiesTable)
 
-	self.spritesheet = love.graphics.newImage("assets/cloud.png")
+	self.spritesheet = love.graphics.newImage("res/sprites/cloud.png")
 
 	self.fallSpeed = 0
 	self.friction = 0

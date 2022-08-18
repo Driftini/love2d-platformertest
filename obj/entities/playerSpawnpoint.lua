@@ -1,6 +1,6 @@
 local class = require "lib.middleclass"
 
-local Entity = require "obj.entity"
+local Entity = require "obj.entities.entity"
 
 -- Player spawnpoint
 local PlayerSpawnpoint = class("PlayerSpawnPoint", Entity)

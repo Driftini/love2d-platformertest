@@ -1,7 +1,7 @@
 local class = require "lib.middleclass"
 local anim8 = require "lib.anim8"
 
-local Entity = require "obj.entity"
+local Entity = require "obj.entities.entity"
 
 -- boilerplate for other entities ig
 local Placeholder = class("Placeholder", Entity)

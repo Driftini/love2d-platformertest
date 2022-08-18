@@ -1,6 +1,6 @@
 local class = require "lib.middleclass"
 
-local Entity = require("obj.entity")
+local Entity = require("obj.entities.entity")
 
 -- Entity capable of movement (npcs, player...)
 local Actor = class("Actor", Entity)

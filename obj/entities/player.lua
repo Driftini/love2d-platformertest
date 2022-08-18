@@ -1,7 +1,7 @@
 local class = require "lib.middleclass"
 local anim8 = require "lib.anim8"
 
-local Actor = require "obj.actor"
+local Actor = require "obj.entities.actor"
 
 local Player = class("Player", Actor)
 
@@ -11,7 +11,7 @@ function Player:initialize(entity, world, entitiesTable)
 	Actor.initialize(self, entity, world, entitiesTable)
 	table.insert(self.collisionGroups, "Player")
 
-	self.spritesheet = love.graphics.newImage("assets/player.png")
+	self.spritesheet = love.graphics.newImage("res/sprites/player.png")
 	local grid = anim8.newGrid(32, 32, self.spritesheet:getWidth(), self.spritesheet:getHeight(), 2, 2, 0)
 	self.animations.idle = anim8.newAnimation(grid(1, 1), 1)
 	self.animations.run = anim8.newAnimation(grid("2-5", 1), {0.12, 0.1, 0.12, 0.1})

@@ -4,12 +4,12 @@ local ldtk = require "lib.ldtk"
 local gamera = require "lib.gamera"
 local utils = require "utils"
 
-local Player = require "obj.player"
-local PlayerSpawnpoint = require "obj.playerSpawnpoint"
-local SCollider = require "obj.scollider"
-local MapTrigger = require "obj.mapTrigger"
-local CloudSpawner = require "obj.cloudSpawner"
-local RainSpawner = require "obj.rainSpawner"
+local Player = require "obj.entities.player"
+local PlayerSpawnpoint = require "obj.entities.playerSpawnpoint"
+local SCollider = require "obj.entities.scollider"
+local MapTrigger = require "obj.entities.mapTrigger"
+local CloudSpawner = require "obj.entities.cloudSpawner"
+local RainSpawner = require "obj.entities.rainSpawner"
 
 local MapLoader = class("MapLoader")
 
