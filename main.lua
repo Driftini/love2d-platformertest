@@ -2,6 +2,8 @@ local MapLoader = require "obj.mapLoader"
 
 local ml
 
+-- Need to add gamestates
+
 function love.load()
 	print("Game started.")
 	--player = Player:new(world, 100, 100)

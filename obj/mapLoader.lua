@@ -32,10 +32,13 @@ function MapLoader:entitySwitch(e)
 	return switch[e.identifier]:new(e, self.world, self.entities)
 end
 
+-- Load LDTK project separately from the maps themselves
 function MapLoader:loadProject(project)
 	ldtk:load("ldtk/levels/" .. project .. ".ldtk")
 end
 
+-- Clear old map data, then load the requested map and spawn the player at the right spawnpoint (if any)
+-- Should add code to "convert" LDTK entities to the game's own format 
 function MapLoader:loadLevel(level, playerSpawnpointID)
 	local loadTime, finishTime
 
@@ -47,6 +50,7 @@ function MapLoader:loadLevel(level, playerSpawnpointID)
 		table.insert(self.layers, layer)
 	end
 
+	-- Clear old map data, reset camera and set the background to the map's defined color
 	function ldtk.onLevelLoad(levelData)
 		print("[MAPLOADER] Loading map " .. levelData.identifier .. "...")
 		loadTime = love.timer.getTime()
@@ -62,6 +66,7 @@ function MapLoader:loadLevel(level, playerSpawnpointID)
 		self.camera:setScale(3)
 	end
 
+	-- Decide where to spawn the player
 	function ldtk.onLevelCreated(levelData)
 		finishTime = love.timer.getTime()
 		print("[MAPLOADER] Map " ..
@@ -84,6 +89,7 @@ function MapLoader:loadLevel(level, playerSpawnpointID)
 	ldtk:level(level)
 end
 
+-- Non-continuous key events get forwarded to entities accepting them
 function MapLoader:keypressed(key)
 	for i = 1, #self.entities do
 		if self.entities[i].keyEvents then
@@ -92,8 +98,8 @@ function MapLoader:keypressed(key)
 	end
 end
 
--- need to add a "switching" bool or something
-
+-- Update every entity, take care of destroyed ones, triggers, camera position and map switching
+-- This needs a massive cleanup 
 function MapLoader:update(dt)
 	local destination -- For map switching
 
@@ -106,10 +112,12 @@ function MapLoader:update(dt)
 		else
 			self.entities[i]:update(dt)
 
-			if self.entities[i].triggered then -- triggered MapTrigger
+			-- Various triggers
+			if self.entities[i].class.name == "MapTrigger" and self.entities[i].triggered then
 				destination = self.entities[i].destination
 			end
 
+			-- Spotlight boolean determines which entity gets targeted by the camera
 			if self.entities[i].spotlight then
 				local camX, camY = utils.getRectCenter(self.entities[i].x, self.entities[i].y, self.entities[i].w, self.entities[i].h)
 
@@ -120,6 +128,7 @@ function MapLoader:update(dt)
 		i = i + 1
 	end
 
+	-- Map switching
 	if destination then
 		for i = 1, #self.entities do
 			if self.entities[i].name == "Player" then
@@ -131,6 +140,8 @@ function MapLoader:update(dt)
 	end
 end
 
+-- Draw entities and tile layers in the right order
+-- Should be edited to merge both tables and to use a new, dedicated z-index variable for sorting
 function MapLoader:draw()
 	self.camera:draw(
 		function()
