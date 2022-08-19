@@ -14,3 +14,4 @@ Optional end goal is making this usable as a base for future games I make with L
 
 ## Other assets
 * Cavernas tileset by Adam Saltsman
+* Sound effects generated with [Bfxr](https://bfxr.net)
