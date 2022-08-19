@@ -28,7 +28,7 @@ function Player:initialize(entity, world, entitiesTable)
 	self.keyEvents = true
 	self.spotlight = true
 
-	self.wasGrounded = false
+	self.wasGrounded = true
 	self.canStepSound = true
 end
 

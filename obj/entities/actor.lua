@@ -17,7 +17,7 @@ function Actor:initialize(entity, world, entitiesTable)
 	self.fallSpeed = 500
 	self.gravityVelocity = 0
 
-	self.grounded = false
+	self.grounded = true
 
 	self.vx = 0
 	self.vy = 0
