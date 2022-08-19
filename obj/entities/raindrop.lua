@@ -20,7 +20,7 @@ function Raindrop:initialize(entity, world, entitiesTable)
 	self.currentAnim = self.animations.spawn
 
 	self.fallSpeed = 0
-	self.friction = 1
+	self.friction = 0
 
 	self.vx = 150
 	self.vy = 400
