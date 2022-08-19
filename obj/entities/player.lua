@@ -15,6 +15,8 @@ function Player:initialize(entity, world, entitiesTable)
 	local grid = anim8.newGrid(32, 32, self.spritesheet:getWidth(), self.spritesheet:getHeight(), 2, 2, 0)
 	self.animations.idle = anim8.newAnimation(grid(1, 1), 1)
 	self.animations.run = anim8.newAnimation(grid("2-5", 1), {0.12, 0.1, 0.12, 0.1})
+	self.animations.jump = anim8.newAnimation(grid(1, 2), 1)
+	self.animations.fall = anim8.newAnimation(grid(2, 2), 1)
 
 	self.currentAnim = self.animations.idle
 
@@ -25,6 +27,9 @@ function Player:initialize(entity, world, entitiesTable)
 
 	self.keyEvents = true
 	self.spotlight = true
+
+	self.wasGrounded = false
+	self.canStepSound = true
 end
 
 function Player:checkInput(dt) -- for continuous inputs
@@ -72,16 +77,33 @@ end
 
 function Player:jump()
 	if self.grounded then
+		TEsound.play("res/sounds/jump.wav", "static")
 		self.vy = self.vy - self.jumpForce
 	end
 end
 
 function Player:update(dt)
+	self.wasGrounded = self.grounded
 	Actor.update(self, dt)
 	self:checkInput(dt)
 
-	if self.running then
+	if self.grounded and not self.wasGrounded then
+		TEsound.play("res/sounds/land.wav", "static")
+	end
+
+	if self.grounded and self.running then
 		self.currentAnim = self.animations.run
+
+		if self.grounded and (self.currentAnim.position == 1 or self.currentAnim.position == 3) and self.canStepSound then
+			self.canStepSound = false
+			TEsound.play("res/sounds/step.wav", "static", {}, 1, 1, function() self.canStepSound = true end)
+		end
+	elseif not self.grounded then
+		if self.vy < self.jumpForce / -2 then
+			self.currentAnim = self.animations.jump
+		else
+			self.currentAnim = self.animations.fall
+		end
 	else
 		self.currentAnim = self.animations.idle
 	end

@@ -1,3 +1,4 @@
+require "lib.tesound"
 local MapLoader = require "obj.mapLoader"
 
 local ml
@@ -26,6 +27,8 @@ function love.keypressed(key, scancode, isRepeat)
 end
 
 function love.update(dt)
+	TEsound.cleanup()
+
 	-- For delta time-related debugging
 	if love.keyboard.isDown("z") then
 		dt = dt / 5

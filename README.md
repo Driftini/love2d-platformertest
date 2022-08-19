@@ -10,6 +10,7 @@ Optional end goal is making this usable as a base for future games I make with L
 * [gamera by kikito](https://github.com/kikito/gamera)
 * [json.lua by rxi](https://github.com/rxi/json.lua)
 * [ldtk-love by Hamdy Elzonqali](https://github.com/HamdyElzonqali/ldtk-love)
+* [TEsound by drhayes](https://github.com/drhayes/TESound)
 
 ## Other assets
 * Cavernas tileset by Adam Saltsman

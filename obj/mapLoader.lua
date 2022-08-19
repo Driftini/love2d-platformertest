@@ -8,6 +8,7 @@ local Player = require "obj.entities.player"
 local PlayerSpawnpoint = require "obj.entities.playerSpawnpoint"
 local SCollider = require "obj.entities.scollider"
 local MapTrigger = require "obj.entities.mapTrigger"
+local SoundTrigger = require "obj.entities.soundTrigger"
 local CloudSpawner = require "obj.entities.cloudSpawner"
 local RainSpawner = require "obj.entities.rainSpawner"
 
@@ -25,6 +26,7 @@ function MapLoader:entitySwitch(e)
 		["PlayerSpawnpoint"]    = PlayerSpawnpoint,
 		["SCollider"]           = SCollider,
 		["MapTrigger"]          = MapTrigger,
+		["SoundTrigger"]        = SoundTrigger,
 		["CloudSpawner"]        = CloudSpawner,
 		["RainSpawner"]         = RainSpawner,
 	}
