@@ -1,55 +1,54 @@
-local class = require "lib.middleclass"
-local bump = require "lib.bump"
+require "lib.tesound"
+local MapLoader = require "obj.mapLoader"
 
-local Player = require "obj.player"
+local ml
 
-local world = bump.newWorld()
-local blocks = {}
-
-local function addBlock(x,y,w,h)
-    local block = {x=x,y=y,w=w,h=h}
-    blocks[#blocks+1] = block
-    world:add(block, x,y,w,h)
-end
-
-local function drawBlocks()
-    for _,block in ipairs(blocks) do
-        love.graphics.rectangle("fill", block.x, block.y, block.w, block.h)
-    end
-end
+-- Need to add gamestates
 
 function love.load()
-    player = Player:new(world, 100, 100)
+	print("Game started.")
+	--player = Player:new(world, 100, 100)
 
-    addBlock(50, 400, 700, 16)
+	if arg[#arg] == "-debug" then require("mobdebug").start() end
 
-    addBlock(50, 300, 128, 16)
-    addBlock(630, 300, 128, 16)
+	-- Graphics configuration
+	love.window.setMode(1280, 720)
+	love.graphics.setDefaultFilter('nearest', 'nearest')
+	love.graphics.setLineStyle('rough')
 
-    addBlock(622, 200, 32, 16)
-    addBlock(720, 150, 32, 16)
+	ml = MapLoader:new()
 
-    addBlock(200, 100, 328, 16)
-    addBlock(200, 40, 228, 16)
-    addBlock(200, 40, 16, 64)
-
-    addBlock(260, 250, 256, 16)
-
+	ml:loadProject("debug")
+	ml:loadLevel("Level_Landing", "Center")
 end
 
 function love.keypressed(key, scancode, isRepeat)
-    player:keypressed(key, isRepeat)
+	ml:keypressed(key)
 end
 
 function love.update(dt)
-    player:update(dt)
+	TEsound.cleanup()
+
+	-- For delta time-related debugging
+	if love.keyboard.isDown("z") then
+		dt = dt / 5
+	end
+
+	ml:update(dt)
 end
 
 function love.draw()
-    love.graphics.print("FPS: " .. love.timer.getFPS(), 4, 4)
-    drawBlocks()
-    player:draw()
+	--love.graphics.scale(2)
 
-    local sizeX, sizeY = love.graphics.getDimensions()
-    love.graphics.print(sizeX .. "x" .. sizeY, 4, 16)
+	ml:draw()
+
+	--love.graphics.scale(0.5)
+
+	local sizeX, sizeY = love.graphics.getDimensions()
+	local debugHUD =
+	"FPS: " .. love.timer.getFPS() .. "\n" ..
+	"Resolution:" .. sizeX .. "x" .. sizeY .. "\n" ..
+	"Entity count: " .. #ml.entities
+
+	love.graphics.print(debugHUD, 4, 4)
 end
