@@ -29,7 +29,7 @@ end
 function Cloud:chooseSprite()
 	local rnd = math.random(1,3)
 
-	local grid = anim8.newGrid(146, 60, self.spritesheet:getWidth(), self.spritesheet:getHeight(), 0, 0, 3)
+	local grid = anim8.newGrid(150, 64, self.spritesheet:getWidth(), self.spritesheet:getHeight(), 1, 1, 2)
 
 	self.animations.spawn = anim8.newAnimation(grid(rnd, 1), 1)
 

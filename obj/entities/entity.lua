@@ -8,6 +8,8 @@ function Entity:initialize(entity, world, entitiesTable)
 	self.world = world
 	self.entitiesTable = entitiesTable
 
+	-- Entities can define their own location and size before initialization
+	-- This code handles dynamic location and size (RainSpawners...)
 	if not self.x and not self.y then
 		self.x, self.y = entity.x, entity.y
 	end
@@ -17,30 +19,30 @@ function Entity:initialize(entity, world, entitiesTable)
 	end
 
 	if not self.order then
-		self.order = entity.order -- Rendering order
+		self.order = entity.order -- Rendering order (to be replaced with ZIndexes)
 	end
 
-	self.visible = entity.visible
+	self.visible = entity.visible -- Whether or not the entity is to be rendered
 
 	self.collisionGroups = {}
 
+	-- Visual properties
 	self.spritesheet = nil
 	self.animations = {}
 	self.currentAnim = nil
 	self.flipped = false
 
+	-- MapLoader interaction
 	self.destroyed = false
 	self.spotlight = false -- Makes the camera look at the entity
 
 	table.insert(self.entitiesTable, self)
-
 	self.world:add(self, self.x, self.y, self.w, self.h)
 end
 
 function Entity:destroy()
 	self.world:remove(self)
 
-	self.visible = false
 	self.destroyed = true -- Makes the entity suitable for removal by the MapLoader
 end
 

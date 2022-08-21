@@ -7,13 +7,13 @@ local Actor = require "obj.entities.actor"
 local Raindrop = class("Raindrop", Actor)
 
 function Raindrop:initialize(entity, world, entitiesTable)
-	self.w, self.h = 9, 9
+	self.w, self.h = 8, 8
 	self.order = 2
 
 	Actor.initialize(self, entity, world, entitiesTable)
 
 	self.spritesheet = love.graphics.newImage("res/sprites/rain.png")
-	local grid = anim8.newGrid(9, 9, self.spritesheet:getWidth(), self.spritesheet:getHeight(), 0, 0, 0)
+	local grid = anim8.newGrid(8, 8, self.spritesheet:getWidth(), self.spritesheet:getHeight(), 1, 1, 2)
 	self.animations.spawn = anim8.newAnimation(grid(1, 1), 1)
 	self.animations.ground = anim8.newAnimation(grid("2-4", 1), 0.1)
 

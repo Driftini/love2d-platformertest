@@ -12,11 +12,11 @@ function Player:initialize(entity, world, entitiesTable)
 	table.insert(self.collisionGroups, "Player")
 
 	self.spritesheet = love.graphics.newImage("res/sprites/player.png")
-	local grid = anim8.newGrid(32, 32, self.spritesheet:getWidth(), self.spritesheet:getHeight(), 2, 2, 0)
+	local grid = anim8.newGrid(32, 32, self.spritesheet:getWidth(), self.spritesheet:getHeight(), 1, 1, 2)
 	self.animations.idle = anim8.newAnimation(grid(1, 1), 1)
-	self.animations.run = anim8.newAnimation(grid("2-5", 1), {0.12, 0.1, 0.12, 0.1})
-	self.animations.jump = anim8.newAnimation(grid(1, 2), 1)
-	self.animations.fall = anim8.newAnimation(grid(2, 2), 1)
+	self.animations.run = anim8.newAnimation(grid("1-4", 2), {0.12, 0.1, 0.12, 0.1})
+	self.animations.jump = anim8.newAnimation(grid(1, 3), 1)
+	self.animations.fall = anim8.newAnimation(grid(2, 3), 1)
 
 	self.currentAnim = self.animations.idle
 

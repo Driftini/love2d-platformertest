@@ -127,6 +127,11 @@ function MapLoader:update(dt)
 			end
 		end
 
+		-- Double check if the entity got destroyed mid-update
+		if self.entities[i].destroyed then
+			table.remove(self.entities, i)
+		end
+
 		i = i + 1
 	end
 
