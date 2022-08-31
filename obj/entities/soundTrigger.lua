@@ -51,7 +51,7 @@ end
 
 function SoundTrigger:draw()
     love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
-    love.graphics.print("Sound trigger", self.x + 3, self.y + 10, 0, 0.6, 0.6)
+    love.graphics.print("Sound\ntrigger", self.x + 3, self.y, 0)
 end
 
 return SoundTrigger

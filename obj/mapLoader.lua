@@ -1,7 +1,7 @@
 local class = require "lib.middleclass"
 local bump = require "lib.bump"
 local ldtk = require "lib.ldtk"
-local gamera = require "lib.gamera"
+local DCamera = require "obj.dcamera"
 local utils = require "utils"
 
 local Player = require "obj.entities.player"
@@ -18,7 +18,10 @@ function MapLoader:initialize()
 	self.world = bump.newWorld() -- Colliding entities
 	self.entities = {} -- All entities (should be merged with bump world probably)
 	self.layers = {} -- Tile layers
-	self.camera = gamera.new(0, 0, 1, 1)
+
+	local rX, rY = G_CANVAS:getDimensions()
+
+	self.camera = DCamera:new(rX, rY, 0, 0, 1, 1)
 end
 
 function MapLoader:entitySwitch(e)
@@ -64,8 +67,8 @@ function MapLoader:loadLevel(level, playerSpawnpointID)
 		self.world = bump.newWorld()
 		love.graphics.setBackgroundColor(levelData.bgColor)
 
-		self.camera:setWorld(0, 0, levelData.width, levelData.height)
-		self.camera:setScale(3)
+		self.camera:setScene(0, 0, levelData.width, levelData.height)
+		self.camera:targetZoom(1)
 	end
 
 	-- Decide where to spawn the player
@@ -123,7 +126,7 @@ function MapLoader:update(dt)
 			if self.entities[i].spotlight then
 				local camX, camY = utils.getRectCenter(self.entities[i].x, self.entities[i].y, self.entities[i].w, self.entities[i].h)
 
-				self.camera:setPosition(camX, camY)
+				self.camera:targetPosition(camX, camY)
 			end
 		end
 
@@ -152,7 +155,8 @@ end
 function MapLoader:draw()
 	self.camera:draw(
 		function()
-			local visibleEntities = self.world:queryRect(self.camera:getVisible())
+			-- local visibleEntities = self.world:queryRect(self.camera:getVisible())
+			local visibleEntities = self.world:getItems()
 
 			print("# entities: " .. self.world:countItems(), "	# drawn: " .. #visibleEntities)
 

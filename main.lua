@@ -3,6 +3,8 @@ local MapLoader = require "obj.mapLoader"
 
 local ml
 
+G_CANVAS = love.graphics.newCanvas(640, 360)
+
 -- Need to add gamestates
 
 function love.load()
@@ -14,6 +16,7 @@ function love.load()
 	-- Graphics configuration
 	love.window.setMode(1280, 720)
 	love.graphics.setDefaultFilter('nearest', 'nearest')
+	G_CANVAS:setFilter('nearest', 'nearest')
 	love.graphics.setLineStyle('rough')
 
 	ml = MapLoader:new()
@@ -38,11 +41,20 @@ function love.update(dt)
 end
 
 function love.draw()
-	--love.graphics.scale(2)
+	-- draw to canvas
+	love.graphics.setCanvas(G_CANVAS)
+	love.graphics.clear()
 
 	ml:draw()
 
-	--love.graphics.scale(0.5)
+	-- bring back normal graphics and draw THE canvas
+	love.graphics.setCanvas()
+
+	love.graphics.scale(3)
+
+	love.graphics.draw(G_CANVAS)
+
+	love.graphics.scale(0.3)
 
 	local sizeX, sizeY = love.graphics.getDimensions()
 	local debugHUD =
