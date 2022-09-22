@@ -47,7 +47,7 @@ function love.draw()
 
 	ml:draw()
 
-	-- bring back normal graphics and draw THE canvas
+	-- bring back normal graphics and draw the canvas to screen
 	love.graphics.setCanvas()
 
 	love.graphics.scale(3)

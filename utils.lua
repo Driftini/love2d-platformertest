@@ -12,6 +12,19 @@ utils.blankEntity = function()
 	}
 end
 
+utils.spawnEntity = function(x, y, world, entitiesTable)
+	local switch = {
+		["PlayerSpawnpoint"]    = PlayerSpawnpoint,
+		["SCollider"]           = SCollider,
+		["MapTrigger"]          = MapTrigger,
+		["SoundTrigger"]        = SoundTrigger,
+		["CloudSpawner"]        = CloudSpawner,
+		["RainSpawner"]         = RainSpawner,
+	}
+
+	return switch[e.identifier]:new(entity, world, entitiesTable)
+end
+
 utils.getRectCenter = function(x, y, w, h)
 	local centerX = x + w / 2
 	local centerY = y + h / 2

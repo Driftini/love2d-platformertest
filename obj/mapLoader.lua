@@ -19,9 +19,9 @@ function MapLoader:initialize()
 	self.entities = {} -- All entities (should be merged with bump world probably)
 	self.layers = {} -- Tile layers
 
-	local rX, rY = G_CANVAS:getDimensions()
+	local resW, resH = G_CANVAS:getDimensions() -- Canvas resolution
 
-	self.camera = DCamera:new(rX, rY, 0, 0, 1, 1)
+	self.camera = DCamera:new(resW, resH, 0, 0, 1, 1)
 end
 
 function MapLoader:entitySwitch(e)
@@ -81,10 +81,14 @@ function MapLoader:loadLevel(level, playerSpawnpointID)
 			for i = 1, #self.entities do
 				if self.entities[i].spawnID == playerSpawnpointID then
 					local playerEntity = utils.blankEntity()
-
 					playerEntity.x, playerEntity.y = self.entities[i].x, self.entities[i].y
 
-					Player:new(playerEntity, self.world, self.entities)
+					local p = Player:new(playerEntity, self.world, self.entities)
+
+					-- Immediately point the camera at the player
+					local camX, camY = utils.getRectCenter(p.x, p.y, p.w, p.h)
+
+					self.camera:instantPosition(camX, camY)
 					return
 				end
 			end
@@ -117,20 +121,27 @@ function MapLoader:update(dt)
 		else
 			self.entities[i]:update(dt)
 
-			-- Various triggers
+			-- Trigger handling
 			if self.entities[i].class.name == "MapTrigger" and self.entities[i].triggered then
 				destination = self.entities[i].destination
 			end
 
+			-- Camera
 			-- Spotlight boolean determines which entity gets targeted by the camera
+			-- todo: spotlight priority?
 			if self.entities[i].spotlight then
 				local camX, camY = utils.getRectCenter(self.entities[i].x, self.entities[i].y, self.entities[i].w, self.entities[i].h)
 
+				if self.entities[i].class.name == "Player" then
+					camX, camY = camX + self.entities[i].vx / 25, camY + self.entities[i].vy / 25
+				end
+
 				self.camera:targetPosition(camX, camY)
+				self.camera:update()
 			end
 		end
 
-		-- Double check if the entity got destroyed mid-update
+		-- Double check if the current entity got destroyed mid-update
 		if self.entities[i].destroyed then
 			table.remove(self.entities, i)
 		end
@@ -155,8 +166,7 @@ end
 function MapLoader:draw()
 	self.camera:draw(
 		function()
-			-- local visibleEntities = self.world:queryRect(self.camera:getVisible())
-			local visibleEntities = self.world:getItems()
+			local visibleEntities = self.world:queryRect(self.camera:getVisibleRect())
 
 			print("# entities: " .. self.world:countItems(), "	# drawn: " .. #visibleEntities)
 
