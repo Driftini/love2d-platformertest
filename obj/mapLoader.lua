@@ -133,7 +133,7 @@ function MapLoader:update(dt)
 				local camX, camY = utils.getRectCenter(self.entities[i].x, self.entities[i].y, self.entities[i].w, self.entities[i].h)
 
 				if self.entities[i].class.name == "Player" then
-					camX, camY = camX + self.entities[i].vx / 25, camY + self.entities[i].vy / 25
+					camX, camY = camX + self.entities[i].vx / 4, camY + (self.entities[i].vy + self.entities[i].gravityVelocity) / 10
 				end
 
 				self.camera:targetPosition(camX, camY)

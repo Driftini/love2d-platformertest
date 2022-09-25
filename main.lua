@@ -37,6 +37,12 @@ function love.update(dt)
 		dt = dt / 5
 	end
 
+	-- if love.keyboard.isDown("c") then
+	-- 	ml.camera:targetZoom(2)
+	-- else
+	-- 	ml.camera:targetZoom(1)
+	-- end
+
 	ml:update(dt)
 end
 
@@ -62,5 +68,5 @@ function love.draw()
 	"Resolution:" .. sizeX .. "x" .. sizeY .. "\n" ..
 	"Entity count: " .. #ml.entities
 
-	love.graphics.print(debugHUD, 4, 4)
+	love.graphics.print(debugHUD, 4, 4, 0, 2, 2)
 end
